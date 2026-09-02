@@ -42,7 +42,7 @@ Scores: 2 meets, 1 partly or fixable inside the pilot, 0 fails. Only public repo
 | C11 Stack diversity against the primary | – | 2 (Go, no Node) | 0 | 1 |
 | Total | 17 | 16 | 13 | 8 |
 
-`chess` fails C5: without tests or CI the work-execution wave cannot exercise failing checks, retries, or verification commands, and it duplicates the primary's stack. `blog` is not a software product. The two winners are complementary: the primary covers everything web-shaped; the secondary covers strict CI, no browser, non-Node, and brings real tracker history.
+`chess` fails C5 (no failing checks, retries, or verification to exercise) and duplicates the primary's stack; `blog` is not a software product. The winners are complementary: the primary covers everything web-shaped; the secondary covers strict CI, no browser, non-Node, and real tracker history.
 
 ## Waves, skills, and pilot assignment
 
@@ -187,10 +187,10 @@ Optional: invalid artifact (pub 1) on HB.
 1. **No pilot identifiers in the shipped surface.** `math-bowl`, `herdr-pr-board`, `Herdr`, the deployment host, and the seed issue titles never appear in `skills/**`, `README.md`, or generated references. ADR 0004's hygiene denylist (kept outside the public tree) gains these terms for those paths.
 2. **One allowlisted place for evidence.** `docs/pilots/**` may name the two pilot repositories and the deployment host and nothing else the scan forbids; opaque IDs, logins, hostnames, tokens, and personal paths stay denied there too. #15 implements it as a path-scoped exception.
 3. **Pilot configuration lives only in the pilot.** Each pilot commits its `.agent-skills/config.yaml`; the catalog links to it and never copies it. Catalog examples keep `acme/widgets` and `example.com`.
-4. **Catalog tests never target a pilot.** #15's fixtures are a synthetic repository with recorded `gh` responses; no workflow here holds a pilot token or coordinate. A pilot run is readiness evidence, not a test.
+4. **Catalog tests never target a pilot.** #15's fixtures are synthetic with recorded `gh` responses; no workflow here holds a pilot token or coordinate. A pilot run is readiness evidence, not a test.
 5. **Two dispositions per finding.** A *catalog bug* is fixed generically with a linked issue and a synthetic-fixture test; a *pilot configuration change* is a commit in the pilot. A finding fixable only by special-casing the pilot is a design bug and returns to the owning spec.
 6. **Second-consumer rule.** No wave is released until it has run on both pilots or the second is waived for that wave in the wave file with a reason. This ADR pre-approves the herdr-pr-board waivers for waves 3 and 5a and the wave 2 coordinator waiver. A waiver is a sentence, not a checkbox.
-7. **No defaults inferred from the pilot.** A value both pilots share (`main`, `npm test`, `Todo`) enters the catalog only as an example or discovered value, never as a mutation-affecting default; the capability spec's no-default rule is what makes this checkable.
+7. **No defaults inferred from the pilot.** A value both pilots share (`main`, `Todo`) enters the catalog only as an example or a discovered value, never as a mutation-affecting default; the capability spec's no-default rule makes this checkable.
 
 ## Pilot logistics
 
@@ -202,8 +202,7 @@ Optional: invalid artifact (pub 1) on HB.
 ## Alternatives considered
 
 - **The source project.** Rejected: `CONTEXT.md` says it will not consume the extracted skills; it is private, so evidence cannot be public; and it is the one repository whose conventions the skills came from, so it cannot detect overfitting.
-- **A synthetic fixture only.** Rejected as the pilot, kept as #15's test bed: no real CI latency, deployment, review, flaky checks, or human with something at stake, which is exactly what the installer caveat, merge boundaries, and the overlay under a real quiz need.
-- **A purpose-built demo repository.** Rejected: a fixture with a deployment and no real backlog, and a temptation to shape the demo to the skills.
+- **A synthetic fixture only, or a purpose-built demo repository.** Rejected as the pilot (the fixture stays #15's test bed): neither has real CI latency, deployment, review, flaky checks, a real backlog, or a human with something at stake, which is what the installer caveat, merge boundaries, and the overlay under a real quiz need; a demo also invites shaping the demo to the skills.
 - **`chess` as primary.** Rejected on C5 and C11. **`blog` as secondary.** Rejected: content, not software; nothing to verify.
 - **A single pilot.** Rejected: one JavaScript web application cannot show that browser control is optional or that `work.verification` is stack-neutral; the second pilot is the cheapest available proof.
 - **An uninspected private repository.** Not selectable on public evidence (open item 1).
