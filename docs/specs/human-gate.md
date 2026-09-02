@@ -73,7 +73,7 @@ The source project used one `ready-for-human` label for both meanings (acknowled
 
 ## Claim behavior (claim protocol v1, `references/claim-protocol.md`)
 
-- **The interactive worker claims** before confirmation and before any question, using the capability-configuration comment format with `skill: pick-up-human-task`. This closes the source gap where two concurrent sessions could clear the same gate.
+- **The interactive worker claims** after the human confirms the selection and before any other side effect (questions, comments, board status), using the capability-configuration comment format with `skill: pick-up-human-task`. The claim step re-reads the active claim, so a collision during the confirmation pause yields `skipped-claimed` and a fresh selection. This closes the source gap where two concurrent sessions could clear the same gate and matches the timing rule in the capability-configuration reconciliation log.
 - **TTL.** `human.claim.ttl` (default `1h`) overrides `claims.ttl` for this family; `claims.heartbeat` applies unchanged. A gate is a conversation, so an hour of silence is a stronger abandonment signal than for agent work.
 - **Mirror.** `human.claim.mirror_status` defaults to `false`: a cleared gate must not appear In Progress (it is not being worked; it is about to be worked by an agent or a person). With `true`, the mirror follows the capability-configuration spec.
 - **Coordinator claims per gate** as `<coordinator-owner>/w<n>` before handing off, passes that owner id to the worker (idempotency: the worker sees its own owner), and releases on skip, tap-out, or a receipt that leaves `claim: held`. Release `disposition` carries the receipt outcome.

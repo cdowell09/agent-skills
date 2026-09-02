@@ -288,7 +288,7 @@ Nothing is written to GitHub during this step; `gh` is not needed.
 
 **Handoff** is the publication spec's producer contract, verbatim: locate `publish-findings` by the capability spec's sibling-discovery order, reading only its frontmatter; if found and the runtime supports sequential interactive skill invocation, invoke `publish-findings <artifact path>` (plus `--unattended` when this run is unattended) and wait for its result line; end the report with exactly one `publication:` line from the contract's vocabulary (`not-attempted (not-installed)` with the install command, `not-attempted (invocation-unavailable)` with the command for the user, `succeeded (...)`, `succeeded-with-failures (...)`, `failed (<outcome>: <reason>)`). Without the publisher the skill produces the artifact, prints the install command, and stops; it never files directly (publication spec open item 1, decided as recommended; #8 rewords its rationale sentence).
 
-**Receipt `receipt.dogfood` v1.** Emitted like the other families: the last line of output as `AGENT_SKILLS_RECEIPT ` plus one-line JSON, and `state/local/runs/<owner-id>.json`. Required: `receipt`, `family`, `skill`, `owner`, `outcome`, `artifact`, `publication`, `protocols`; everything else additive.
+**Receipt `receipt.dogfood` v1.** Emitted like the other families, using the common receipt envelope defined in the capability-configuration spec: the marker block (`<!-- agent-skills:receipt dogfood v1 -->` plus YAML) as the canonical form, and `state/local/runs/<owner-id>.json`. Required: `receipt`, `family`, `skill`, `owner`, `outcome`, `artifact`, `publication`, `protocols`; everything else additive.
 
 ```json
 {"receipt": 1, "family": "dogfood", "skill": "dogfood", "skill_version": "0.1.0",
